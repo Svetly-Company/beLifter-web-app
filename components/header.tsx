@@ -19,7 +19,7 @@ export function Header({ absolute } : { absolute?: boolean }) {
         <div className="">
           <a href="/">
           <Image 
-          className="w-28"
+          className="w-36"
           src={LogoImage} alt="Logo do BeLifter" 
           />
           </a>

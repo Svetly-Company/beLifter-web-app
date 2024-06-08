@@ -1,8 +1,8 @@
 import { Header } from "@/components/header";
-import { ChevronRight } from "lucide-react";
 import Image from "next/image";
 import GymExample from "@/assets/example-gym-bg.png";
 import { Footer } from "@/components/footer";
+import { FaChevronRight } from "react-icons/fa";
 
 interface IGymCard {
     name: string;
@@ -35,9 +35,9 @@ export default function Page() {
                 <div className="flex flex-col gap-4 justify-between mb-8 md:flex-row md:w-full">
                     <p className="text-2xl">Onde deseja treinar?</p>
                     <div className="flex">
-                        <a href="#" className="bg-[#00BF63] py-2 px-4 rounded-full font-semibold flex gap-2">
-                            <label>Torne-se um parceiro</label>
-                            <ChevronRight size={24} />
+                        <a href="#" className="bg-[#00BF63] py-2 px-4 rounded-full font-semibold flex gap-2 items-center">
+                            <label className="hover:cursor-pointer">Torne-se um parceiro</label>
+                            <FaChevronRight />
                         </a>
                     </div>
                 </div>
