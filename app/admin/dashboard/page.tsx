@@ -20,7 +20,6 @@ export default async function Page() {
             </section>
         )
     }catch(e) {
-        cookiesStore.delete("access_token");
-        return redirect("/admin/login");
+        return redirect("/admin/login?error=1");
     }
 }

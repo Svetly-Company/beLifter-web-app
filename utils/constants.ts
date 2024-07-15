@@ -1,1 +1,1 @@
-export const API_URL = "https://belifter-server.onrender.com/";
+export const API_URL = process.env.NODE_ENV == "production" ? "https://belifter-server.onrender.com/" : "http://localhost:3333/";
