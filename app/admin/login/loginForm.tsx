@@ -5,6 +5,7 @@ import { API_URL } from "@/utils/constants";
 import axios from "axios";
 import clsx from "clsx";
 import { deleteCookie, setCookie } from "cookies-next";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
 
@@ -92,7 +93,7 @@ export function LoginForm({ error } : { error: boolean }) {
                 />
             </div>
             <div className="mt-6 flex justify-center w-4/5">
-                <a href="#" className="text-xs underline mr-2">Ainda não tenho uma conta</a>
+                <Link href="/admin/register" className="text-xs underline mr-2">Ainda não tenho uma conta</Link>
             </div>
         </form>
     )
