@@ -2,15 +2,50 @@ import { useToast } from "@/components/ui/use-toast";
 import clsx from "clsx";
 import { ChangeEvent, useState } from "react";
 
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+  } from "@/components/ui/alert-dialog"
+
 type IInput = { 
     id: string, 
     label: string, 
     wrong: boolean, 
-    type: string, 
+    type: "color" | "email" | "password" | "text", 
     placeholder?: string, 
     value: string,
-    onChange: (e : ChangeEvent<HTMLInputElement>) => void,
+    onChange?: (e : ChangeEvent<HTMLInputElement>) => void,
     maxLength?: number
+}
+
+const cnpjMask = (value : string) => {
+    return value
+      .replace(/\D+/g, '') // não deixa ser digitado nenhuma letra
+      .replace(/(\d{2})(\d)/, '$1.$2') // captura 2 grupos de número o primeiro com 2 digitos e o segundo de com 3 digitos, apos capturar o primeiro grupo ele adiciona um ponto antes do segundo grupo de número
+      .replace(/(\d{3})(\d)/, '$1.$2')
+      .replace(/(\d{3})(\d)/, '$1/$2') // captura 2 grupos de número o primeiro e o segundo com 3 digitos, separados por /
+      .replace(/(\d{4})(\d)/, '$1-$2')
+      .replace(/(-\d{2})\d+?$/, '$1') // captura os dois últimos 2 números, com um - antes dos dois números
+}
+const cepMask = (value : string) => {
+    return value
+      .replace(/\D+/g, '') // remove any non-digit characters
+      .replace(/(\d{5})(\d)/, '$1-$2') // add a hyphen after the first 5 digits
+      .replace(/(-\d{3})\d+?$/, '$1') // capture the last 3 digits, with a hyphen before them
+}
+const numberMask = (value : string) => {
+    return value
+      .replace(/\D+/g, '') // remove any non-digit characters
+}
+const unmasker = (value : string) => {
+    return value.replaceAll(/\D+/g, '');
 }
 
 function Input({ id, label, wrong, type, placeholder, value, onChange, maxLength } : IInput) {
@@ -27,7 +62,8 @@ function Input({ id, label, wrong, type, placeholder, value, onChange, maxLength
             /> 
             : <input 
             className={clsx(`w-full bg-[#111112] rounded-lg px-4 py-2 shadow-sm transition-shadow shadow-[#0094bf77]`, {
-                "shadow-[#ff8f8f]": wrong
+                "shadow-[#ff8f8f]": wrong,
+                "opacity-60": !onChange && true
             })}
             type={type} 
             id={"input-"+id} 
@@ -35,34 +71,251 @@ function Input({ id, label, wrong, type, placeholder, value, onChange, maxLength
             value={value}
             onChange={onChange}
             maxLength={maxLength || 32}
+            disabled={!onChange && true}
             />}
         </div>
     )
 }
 
-const cnpjMask = (value : string) => {
-    return value
-      .replace(/\D+/g, '') // não deixa ser digitado nenhuma letra
-      .replace(/(\d{2})(\d)/, '$1.$2') // captura 2 grupos de número o primeiro com 2 digitos e o segundo de com 3 digitos, apos capturar o primeiro grupo ele adiciona um ponto antes do segundo grupo de número
-      .replace(/(\d{3})(\d)/, '$1.$2')
-      .replace(/(\d{3})(\d)/, '$1/$2') // captura 2 grupos de número o primeiro e o segundo com 3 digitos, separados por /
-      .replace(/(\d{4})(\d)/, '$1-$2')
-      .replace(/(-\d{2})\d+?$/, '$1') // captura os dois últimos 2 números, com um - antes dos dois números
+function DialogButton({ storetime, previousData } : { storetime: () => void, previousData: any }) {
+    return (
+        <AlertDialog>
+        <AlertDialogTrigger 
+        className="font-bold bg-gradient-to-r from-[#0094bf] to-[#0094bf44] py-4 w-4/5 rounded-lg hover:cursor-pointer"
+        onClick={() => { storetime(); }}
+        >
+            Criar conta
+        </AlertDialogTrigger>
+        <AlertDialogContent className="bg-slate-900 border-slate-950 text-white">
+            <AlertDialogHeader>
+            <AlertDialogTitle>{previousData.name}, Confirme os seus dados</AlertDialogTitle>
+            <AlertDialogDescription className="text-slate-300">
+                <p>Verifique se todas as informações estão corretas. Após a criação da conta, você não poderá alterar o CNPJ e o e-mail.</p>
+                <div className="flex flex-col gap-1 my-2">
+                    <p><b>CNPJ:</b> {cnpjMask(previousData.cnpj || "")}</p>
+                    <p><b>E-mail:</b> {previousData.email}</p>
+                    <p><b>Endereço:</b> {previousData.location.street}, {previousData.location.streetNumber} - {previousData.location.district}, {previousData.location.city} - {cepMask(previousData.location.cep || "")}</p>    
+                </div>
+                <p>Caso todos os dados estejam corretos, aceite os termos e clique em "Criar conta".</p>
+            </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+                <AlertDialogCancel className="bg-red-600 text-white border-none">Cancelar</AlertDialogCancel>
+                <AlertDialogAction className="bg-gradient-to-r to-[#0094bf] from-[#0094bf44] hover:from-[#2a91b185] hover:to-[#3cc8f3] text-white">
+                    Criar conta
+                </AlertDialogAction>
+            </AlertDialogFooter>
+        </AlertDialogContent>
+        </AlertDialog>
+    )
+} 
+
+type INextButton = { 
+    lastStep? : boolean, 
+    onClick?: () => void, 
+    storetime?: () => void,
+    previousData?: any
+};
+
+function NextButton({ lastStep, onClick, storetime, previousData } : INextButton) {
+    return (
+        <div className="mt-6 flex justify-center w-full">
+            {
+                !lastStep || !storetime ? <input 
+                className="font-bold bg-gradient-to-r from-[#0094bf] to-[#0094bf44] py-4 w-4/5 rounded-lg hover:cursor-pointer"
+                type="button"
+                onClick={onClick}
+                value="Próximo"
+                /> :
+                <DialogButton storetime={storetime} previousData={previousData} />
+            }
+        </div>
+    )
 }
-const cnpjUnmask = (value : string) => {
-    return value.replaceAll(/\D+/g, '');
+
+function TimeInput({ dayname, update } : { dayname: string, update: (day: string, opening?: string, closing?: string) => void }) {
+    const [active, setActive] = useState(false);
+    const [opening, setOpening] = useState("06:00");
+    const [closing, setClosing] = useState("22:00");
+    return (
+        <div className={clsx("flex items-center justify-between w-full", {
+            "opacity-60": !active
+        })}>
+            <div className="flex gap-2">
+                <input 
+                checked={active} 
+                type="checkbox"
+                onChange={(e) => { 
+                    e.target.checked ? setActive(true) : setActive(false); 
+                    if(!e.target.checked) update(dayname, undefined, undefined);
+                    else update(dayname, opening, closing);
+                }} 
+                />
+                <label className="text-base">{dayname}</label>
+            </div>
+            <div className="flex gap-2">
+                <input 
+                disabled={!active} 
+                value={opening}
+                onChange={(e) => {
+                    setOpening(e.target.value);
+                    update(dayname, e.target.value, closing);
+                }} 
+                type="time" 
+                className="bg-slate-800 color-white text-sm px-2 rounded-sm shadow-sm shadow-[#0092bfd8]" 
+                />
+                <input 
+                disabled={!active} 
+                value={closing} 
+                onChange={(e) => {
+                    setClosing(e.target.value);
+                    update(dayname, opening, e.target.value);
+                }}
+                type="time" 
+                className="bg-slate-800 color-white text-sm px-2 rounded-sm shadow-sm shadow-[#0092bfd8]" 
+                />
+            </div>
+        </div>
+    )
+}
+
+/* WORKING TIME */
+function StepFour({ next, datasetter, previousData } : { next: () => void, datasetter: (data: any) => void, previousData: any }) {
+    const [times, setTimes] = useState({});
+    const { toast } = useToast();
+
+    function storeTimes() {
+        datasetter({ times });
+    }
+
+    function updateTimes(day : string, opening? : string, closing? : string) {
+        if(!opening || !closing) {
+            setTimes({ ...times, [day]: null });
+            return;
+        }
+        setTimes({ ...times, [day]: { opening, closing }});
+    }
+
+    return (
+        <div>
+            <div className="my-2">
+                <h1 className="text-center text-lg font-bold">Horário de funcionamento</h1>
+            </div>
+            <div className="flex flex-col gap-3">
+                <TimeInput dayname="Segunda-feira" update={updateTimes} />
+                <TimeInput dayname="Terça-feira" update={updateTimes} />
+                <TimeInput dayname="Quarta-feira" update={updateTimes} />
+                <TimeInput dayname="Quinta-feira" update={updateTimes} />
+                <TimeInput dayname="Sexta-feira" update={updateTimes} />
+                <TimeInput dayname="Sábado" update={updateTimes} />
+                <TimeInput dayname="Domingo" update={updateTimes} />
+            </div>
+            <NextButton lastStep={true} storetime={storeTimes} previousData={previousData} />
+        </div>
+    )
+}
+
+// Location
+function StepThree({ next, datasetter, previousData } : { next: () => void, datasetter: (data: any) => void, previousData: any }) {
+    const [cep, setCEP] = useState(previousData.location?.cep && cepMask(previousData.location.cep) || "");
+    const [street, setStreet] = useState(previousData.location?.street || "");
+    const [district, setDistrict] = useState(previousData.location?.district || "");
+    const [city, setCity] = useState(previousData.location?.city || "");
+    const [streetNumber, setStreetNumber] = useState(previousData.location?.streetNumber || "");
+    const [wrongInputs, setWrongInputs] = useState({ cep: false, street: false });
+    const { toast } = useToast();
+
+    function tryNext() {
+        const cepValue = unmasker(cep);
+        if(!cepValue || cepValue.length != 8) {
+            setWrongInputs({ cep: true, street: false });
+            toast({ title: "CEP inválido", description: "Digite um CEP válido.", variant: "destructive" });
+            return;
+        }
+        if(!streetNumber) {
+            setWrongInputs({ cep: false, street: true });
+            toast({ title: "Número da rua obrigatório", description: "Digite o número da rua da sua academia.", variant: "destructive" });
+            return;
+        }
+        datasetter({ location: { cep: cepValue, street, city, district, streetNumber } });
+        next();
+    }
+
+    return (
+        <div>
+            <Input
+            id="cep"
+            label="CEP da sua academia"
+            wrong={wrongInputs.cep}
+            placeholder="Digite o CEP da sua academia"
+            type="text"
+            value={cep}
+            maxLength={9}
+            onChange={(e) => {
+                setWrongInputs({ cep: false, street: false });
+                let currentInput = cepMask(e.target.value);
+                setCEP(currentInput)
+                if(currentInput.length == 9) {
+                    fetch(`https://viacep.com.br/ws/${unmasker(currentInput)}/json/`)
+                    .then(res => res.json())
+                    .then(data => {
+                        if(data.erro) {
+                            toast({ title: "CEP inválido", description: "Digite um CEP válido.", variant: "destructive" });
+                            setWrongInputs({ cep: true, street: false });
+                            return;
+                        }
+                        setStreet(data.logradouro);
+                        setDistrict(data.bairro);
+                        setCity(data.localidade);
+                    })
+                    .catch(() => {
+                        toast({ title: "CEP inválido", description: "Digite um CEP válido.", variant: "destructive" });
+                        setWrongInputs({ cep: true, street: false });
+                    })
+                }else{
+                    setStreet("");
+                    setDistrict("");
+                    setCity("");
+                }
+            }}
+            />
+            <Input
+            id="district"
+            label="Localização da sua academia"
+            wrong={wrongInputs.street}
+            placeholder="A localização da sua academia aparacerá aqui"
+            type="text"
+            value={street ? `${street}, ${district} - ${city}` : ""}
+            maxLength={128}
+            />
+            <Input
+            id="street-number"
+            label="Número da rua"
+            wrong={wrongInputs.street}
+            placeholder="Digite o número da rua"
+            type="text"
+            value={streetNumber}
+            maxLength={4}
+            onChange={(e) => {
+                setWrongInputs({ cep: false, street: false });
+                setStreetNumber(numberMask(e.target.value))
+            }}
+            />
+            <NextButton onClick={tryNext} />
+        </div>
+    )
 }
 
 // CNPJ, Name, color
 function StepTwo({ next, datasetter, previousData } : { next: () => void, datasetter: (data: any) => void, previousData: any }) {
-    const [cnpj, setCNPJ] = useState(previousData.cnpj || "");
+    const [cnpj, setCNPJ] = useState(previousData.cnpj && cnpjMask(previousData.cnpj) || "");
     const [name, setName] = useState(previousData.name || "");
     const [color, setColor] = useState(previousData.color || "#ff0000");
     const [wrongInputs, setWrongInputs] = useState({ cnpj: false, name: false });
     const { toast } = useToast();
 
     function tryNext() {
-        const cnpjValue = cnpjUnmask(cnpj);
+        const cnpjValue = unmasker(cnpj);
         if(!cnpjValue || cnpjValue.length != 14) {
             setWrongInputs({ cnpj: true, name: false });
             toast({ title: "CNPJ inválido", description: "Digite um CNPJ válido.", variant: "destructive" });
@@ -85,11 +338,11 @@ function StepTwo({ next, datasetter, previousData } : { next: () => void, datase
             wrong={wrongInputs.cnpj}
             placeholder="Digite o CNPJ da sua academia"
             type="text"
-            value={cnpjMask(cnpj)}
+            value={cnpj}
             maxLength={18}
             onChange={(e) => {
                 setWrongInputs({ cnpj: false, name: false });
-                setCNPJ(e.target.value)
+                setCNPJ(cnpjMask(e.target.value))
             }}
             />
             <Input
@@ -114,14 +367,7 @@ function StepTwo({ next, datasetter, previousData } : { next: () => void, datase
                 setColor(e.target.value)
             }}
             />
-            <div className="mt-6 flex justify-center w-full">
-                <input 
-                className="font-bold bg-gradient-to-r from-[#0094bf] to-[#0094bf44] py-4 w-4/5 rounded-lg hover:cursor-pointer"
-                type="button" 
-                onClick={tryNext}
-                value="Próximo"
-                />
-            </div>
+            <NextButton onClick={tryNext} />
         </div>
     )
 }
@@ -192,14 +438,7 @@ function StepOne({ next, datasetter, previousData } : { next: () => void, datase
                 setConfirmPassword(e.target.value)
             }}
             />
-            <div className="mt-8 flex justify-center w-full">
-                <input 
-                className="font-bold bg-gradient-to-r from-[#0094bf] to-[#0094bf44] py-4 w-4/5 rounded-lg hover:cursor-pointer"
-                type="button" 
-                onClick={tryNext}
-                value="Próximo"
-                />
-            </div>
+            <NextButton onClick={tryNext} />
         </div>
     )
 }
@@ -214,4 +453,6 @@ type IStepInput = {
 export function StepInput({ step, next, datasetter, previousData } : IStepInput) {
     if(step == 1) return <StepOne next={next} datasetter={datasetter} previousData={previousData} />;
     if(step == 2) return <StepTwo next={next} datasetter={datasetter} previousData={previousData} />;
+    if(step == 3) return <StepThree next={next} datasetter={datasetter} previousData={previousData} />;
+    if(step == 4) return <StepFour next={next} datasetter={datasetter} previousData={previousData} />;
 }

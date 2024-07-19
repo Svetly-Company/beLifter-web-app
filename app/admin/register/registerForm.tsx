@@ -1,40 +1,24 @@
 'use client';
 
 import { useToast } from "@/components/ui/use-toast";
-import { API_URL } from "@/utils/constants";
-import axios from "axios";
-import { setCookie } from "cookies-next";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
 import { StepInput } from "./stepInput";
 import clsx from "clsx";
 
-const TOTAL_STEPS = 3;
+const TOTAL_STEPS = 4;
 
 export function RegisterForm() {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [wrongInputs, setWrongInputs] = useState({ email: false, password: false });
     const router = useRouter();
     const { toast } = useToast();
 
     const [userdata, setUserdata] = useState({});
     const [step, setStep] = useState(1);
 
-    function wrongSubmit(alert : string) {
-        setWrongInputs({ email: true, password: true });
-        toast({ title: "Dados inválidos", description: alert, variant: "destructive"});
-    }
-
     function tryLogin(e : FormEvent<HTMLFormElement>) {
         e.preventDefault();
-        if(!email || !password
-        || password.length < 8 || password.length > 32
-        ) {
-            wrongSubmit("Preencha todos os campos corretamente.");
-            return;
-        }
+        alert('oi');
     }
 
     function appendUserdata(data : any) {
