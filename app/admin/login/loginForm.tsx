@@ -1,8 +1,7 @@
 'use client';
 
 import { useToast } from "@/components/ui/use-toast";
-import { API_URL } from "@/utils/constants";
-import axios from "axios";
+import { API } from "@/utils/constants";
 import clsx from "clsx";
 import { deleteCookie, setCookie } from "cookies-next";
 import Link from "next/link";
@@ -31,7 +30,7 @@ export function LoginForm({ error } : { error: boolean }) {
             wrongSubmit("Preencha todos os campos corretamente.");
             return;
         }
-        axios.post(API_URL + "auth/signin", {
+        API.post("auth/signin", {
             email,
             password
         }).then((res) => {

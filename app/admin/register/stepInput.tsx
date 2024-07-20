@@ -1,4 +1,4 @@
-import { useToast } from "@/components/ui/use-toast";
+import { toast, useToast } from "@/components/ui/use-toast";
 import clsx from "clsx";
 import { ChangeEvent, useState } from "react";
 
@@ -13,7 +13,11 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
   } from "@/components/ui/alert-dialog"
+import { useRegistrationStore } from "./registerForm";
+import { useRouter } from "next/navigation";
+import { setCookie } from "cookies-next";
 
+/* INTERFACES */
 type IInput = { 
     id: string, 
     label: string, 
@@ -24,7 +28,16 @@ type IInput = {
     onChange?: (e : ChangeEvent<HTMLInputElement>) => void,
     maxLength?: number
 }
+type INextButton = { 
+    lastStep? : boolean, 
+    onClick?: () => void
+};
+type IStepInput = { 
+    step: number, 
+    next: () => void
+};
 
+/* MASKS */
 const cnpjMask = (value : string) => {
     return value
       .replace(/\D+/g, '') // não deixa ser digitado nenhuma letra
@@ -77,12 +90,16 @@ function Input({ id, label, wrong, type, placeholder, value, onChange, maxLength
     )
 }
 
-function DialogButton({ storetime, previousData } : { storetime: () => void, previousData: any }) {
+function DialogButton() {
+    const previousData = useRegistrationStore((state) => state.data);
+    const [acceptTerms, setAcceptTerms] = useState(false);
+
+    const router = useRouter();
+
     return (
         <AlertDialog>
         <AlertDialogTrigger 
         className="font-bold bg-gradient-to-r from-[#0094bf] to-[#0094bf44] py-4 w-4/5 rounded-lg hover:cursor-pointer"
-        onClick={() => { storetime(); }}
         >
             Criar conta
         </AlertDialogTrigger>
@@ -90,44 +107,61 @@ function DialogButton({ storetime, previousData } : { storetime: () => void, pre
             <AlertDialogHeader>
             <AlertDialogTitle>{previousData.name}, Confirme os seus dados</AlertDialogTitle>
             <AlertDialogDescription className="text-slate-300">
-                <p>Verifique se todas as informações estão corretas. Após a criação da conta, você não poderá alterar o CNPJ e o e-mail.</p>
-                <div className="flex flex-col gap-1 my-2">
-                    <p><b>CNPJ:</b> {cnpjMask(previousData.cnpj || "")}</p>
-                    <p><b>E-mail:</b> {previousData.email}</p>
-                    <p><b>Endereço:</b> {previousData.location.street}, {previousData.location.streetNumber} - {previousData.location.district}, {previousData.location.city} - {cepMask(previousData.location.cep || "")}</p>    
-                </div>
-                <p>Caso todos os dados estejam corretos, aceite os termos e clique em "Criar conta".</p>
+                Verifique se todas as informações estão corretas. Após a criação da conta, você não poderá alterar o CNPJ e o e-mail.
+                <span className="flex flex-col gap-1 my-2">
+                    <b>CNPJ:</b> {cnpjMask(previousData.cnpj || "")}<br />
+                    <b>E-mail:</b> {previousData.email}<br />
+                    <b>Endereço:</b> {previousData.location.street}, {previousData.location.streetNumber} - {previousData.location.district}, {previousData.location.city} - {cepMask(previousData.location.cep || "")}   
+                </span>
+                Caso todos os dados estejam corretos, aceite os termos e clique em "Criar conta".
             </AlertDialogDescription>
             </AlertDialogHeader>
-            <AlertDialogFooter>
-                <AlertDialogCancel className="bg-red-600 text-white border-none">Cancelar</AlertDialogCancel>
-                <AlertDialogAction className="bg-gradient-to-r to-[#0094bf] from-[#0094bf44] hover:from-[#2a91b185] hover:to-[#3cc8f3] text-white">
-                    Criar conta
-                </AlertDialogAction>
+            <AlertDialogFooter className="flex flex-col sm:flex-col gap-4">
+                <div className="flex gap-2">
+                    <input type="checkbox" checked={acceptTerms} onChange={(e) => { setAcceptTerms(e.target.checked) }} />
+                    <label className="text-xs text-slate-300">
+                        Aceito os <u>termos de uso</u> e a <u>política de privacidade</u>.
+                    </label>
+                </div>
+                <div className="flex justify-around">
+                    <AlertDialogCancel className="bg-red-600 text-white border-none">Cancelar</AlertDialogCancel>
+                    <AlertDialogAction 
+                    onClick={async (e) => { 
+                        e.preventDefault(); 
+                        if(!acceptTerms) {
+                            toast({ title: "Termos de uso", description: "Aceite os termos de uso para continuar.", variant: "destructive" });
+                            return;
+                        }
+                        const creation = await useRegistrationStore.getState().finishRegistration();
+                        if(creation.code === "success") {
+                            console.log(creation);
+                            setCookie("access_token", creation.access_token);
+                            setTimeout(() => { router.push("/admin/dashboard"); }, 500);
+                            return;
+                        }
+                        toast({ title: "Erro ao criar conta", description: "Ocorreu um erro ao criar a sua conta: " + creation.message, variant: "destructive" });
+                    }}
+                    className="bg-gradient-to-r to-[#0094bf] from-[#0094bf44] hover:from-[#2a91b185] hover:to-[#3cc8f3] text-white">
+                        Criar conta
+                    </AlertDialogAction>
+                </div>
             </AlertDialogFooter>
         </AlertDialogContent>
         </AlertDialog>
     )
 } 
 
-type INextButton = { 
-    lastStep? : boolean, 
-    onClick?: () => void, 
-    storetime?: () => void,
-    previousData?: any
-};
-
-function NextButton({ lastStep, onClick, storetime, previousData } : INextButton) {
+function NextButton({ lastStep, onClick } : INextButton) {
     return (
         <div className="mt-6 flex justify-center w-full">
             {
-                !lastStep || !storetime ? <input 
+                !lastStep ? <input 
                 className="font-bold bg-gradient-to-r from-[#0094bf] to-[#0094bf44] py-4 w-4/5 rounded-lg hover:cursor-pointer"
                 type="button"
                 onClick={onClick}
                 value="Próximo"
                 /> :
-                <DialogButton storetime={storetime} previousData={previousData} />
+                <DialogButton />
             }
         </div>
     )
@@ -180,12 +214,14 @@ function TimeInput({ dayname, update } : { dayname: string, update: (day: string
 }
 
 /* WORKING TIME */
-function StepFour({ next, datasetter, previousData } : { next: () => void, datasetter: (data: any) => void, previousData: any }) {
+function StepFour({ next } : { next: () => void }) {
+    const updateData = useRegistrationStore((state) => state.updateData);
+    
     const [times, setTimes] = useState({});
     const { toast } = useToast();
 
     function storeTimes() {
-        datasetter({ times });
+        updateData({ times });
     }
 
     function updateTimes(day : string, opening? : string, closing? : string) {
@@ -210,13 +246,16 @@ function StepFour({ next, datasetter, previousData } : { next: () => void, datas
                 <TimeInput dayname="Sábado" update={updateTimes} />
                 <TimeInput dayname="Domingo" update={updateTimes} />
             </div>
-            <NextButton lastStep={true} storetime={storeTimes} previousData={previousData} />
+            <NextButton lastStep={true} />
         </div>
     )
 }
 
 // Location
-function StepThree({ next, datasetter, previousData } : { next: () => void, datasetter: (data: any) => void, previousData: any }) {
+function StepThree({ next } : { next: () => void }) {
+    const previousData = useRegistrationStore((state) => state.data)
+    const updateData = useRegistrationStore((state) => state.updateData);
+    
     const [cep, setCEP] = useState(previousData.location?.cep && cepMask(previousData.location.cep) || "");
     const [street, setStreet] = useState(previousData.location?.street || "");
     const [district, setDistrict] = useState(previousData.location?.district || "");
@@ -237,7 +276,7 @@ function StepThree({ next, datasetter, previousData } : { next: () => void, data
             toast({ title: "Número da rua obrigatório", description: "Digite o número da rua da sua academia.", variant: "destructive" });
             return;
         }
-        datasetter({ location: { cep: cepValue, street, city, district, streetNumber } });
+        updateData({ location: { cep: cepValue, street, city, district, streetNumber } });
         next();
     }
 
@@ -307,7 +346,10 @@ function StepThree({ next, datasetter, previousData } : { next: () => void, data
 }
 
 // CNPJ, Name, color
-function StepTwo({ next, datasetter, previousData } : { next: () => void, datasetter: (data: any) => void, previousData: any }) {
+function StepTwo({ next } : { next: () => void }) {
+    const previousData = useRegistrationStore((state) => state.data)
+    const updateData = useRegistrationStore((state) => state.updateData);
+
     const [cnpj, setCNPJ] = useState(previousData.cnpj && cnpjMask(previousData.cnpj) || "");
     const [name, setName] = useState(previousData.name || "");
     const [color, setColor] = useState(previousData.color || "#ff0000");
@@ -326,7 +368,7 @@ function StepTwo({ next, datasetter, previousData } : { next: () => void, datase
             toast({ title: "Nome obrigatório", description: "Digite o nome da sua academia.", variant: "destructive" });
             return;
         }
-        datasetter({ cnpj: cnpjValue, name, color });
+        updateData({ cnpj: cnpjValue, name, color });
         next();
     }
 
@@ -373,7 +415,10 @@ function StepTwo({ next, datasetter, previousData } : { next: () => void, datase
 }
 
 // Email, Password
-function StepOne({ next, datasetter, previousData } : { next: () => void, datasetter: (data: any) => void, previousData: any }) {
+function StepOne({ next } : { next: () => void }) {
+    const previousData = useRegistrationStore((state) => state.data)
+    const updateData = useRegistrationStore((state) => state.updateData);
+
     const [email, setEmail] = useState(previousData.email || "");
     const [password, setPassword] = useState(previousData.password || "");
     const [confirmPassword, setConfirmPassword] = useState(previousData.password || "");
@@ -396,7 +441,7 @@ function StepOne({ next, datasetter, previousData } : { next: () => void, datase
             toast({ title: "Senha inválida", description: "Suas senhas não coincidem.", variant: "destructive" });
             return;
         }
-        datasetter({ email, password });
+        updateData({ email, password });
         next();
     }
 
@@ -443,16 +488,9 @@ function StepOne({ next, datasetter, previousData } : { next: () => void, datase
     )
 }
 
-type IStepInput = { 
-    step: number, 
-    next: () => void, 
-    datasetter: (data: any) => void,
-    previousData: any
-};
-
-export function StepInput({ step, next, datasetter, previousData } : IStepInput) {
-    if(step == 1) return <StepOne next={next} datasetter={datasetter} previousData={previousData} />;
-    if(step == 2) return <StepTwo next={next} datasetter={datasetter} previousData={previousData} />;
-    if(step == 3) return <StepThree next={next} datasetter={datasetter} previousData={previousData} />;
-    if(step == 4) return <StepFour next={next} datasetter={datasetter} previousData={previousData} />;
+export function StepInput({ step, next } : IStepInput) {
+    if(step == 1) return <StepOne next={next} />;
+    if(step == 2) return <StepTwo next={next} />;
+    if(step == 3) return <StepThree next={next} />;
+    if(step == 4) return <StepFour next={next} />;
 }

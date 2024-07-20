@@ -1,5 +1,4 @@
-import { API_URL } from "@/utils/constants";
-import axios from "axios";
+import { API } from "@/utils/constants";
 import { cookies } from "next/headers"
 import { redirect } from "next/navigation";
 
@@ -7,13 +6,13 @@ export default async function Page() {
     const cookiesStore = cookies();
     const token = cookiesStore.get("access_token");
     if(!token) redirect("/admin/login");
-    const auth_header = { headers: { 'Authorization': `Bearer ${token.value}` } } ;
 
     try{
-        const user_req = await axios.get(API_URL+"auth/profile", auth_header);
+        const user_req = await API.get("auth/profile", token.value);
         const user = user_req.data;
         return (
             <section>
+                <h1 className="text-2xl font-bold">Dashboard</h1>
                 Id: {user.id}<br />
                 Nome: {user.name}<br />
                 Email: {user.email}
