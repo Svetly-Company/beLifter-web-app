@@ -1,6 +1,7 @@
 import { API } from "@/utils/constants";
 import { cookies } from "next/headers"
 import { redirect } from "next/navigation";
+import { Navbar } from "./navbar";
 
 export default async function Page() {
     const cookiesStore = cookies();
@@ -11,14 +12,19 @@ export default async function Page() {
         const user_req = await API.get("auth/profile", token.value);
         const user = user_req.data;
         return (
-            <section>
-                <h1 className="text-2xl font-bold">Dashboard</h1>
-                Id: {user.id}<br />
-                Nome: {user.name}<br />
-                Email: {user.email}
+            <section className="min-h-screen flex p-8">
+                <Navbar selectedIndex={0} />
+                <div className="flex-[0.8]">
+                    <div className="flex justify-between">
+                        <h1 className="text-3xl font-semibold p-4 text-center">Aqui está seu Painel de controle, {user.name}.</h1>
+                        <div className="bg-white w-16 h-16 rounded-full"></div>
+                    </div>
+                </div>
             </section>
         )
     }catch(e) {
-        return redirect("/admin/login?error=1");
+        console.log(e);
+        return <div>erro</div>
+        //return redirect("/admin/login?error=1");
     }
 }
