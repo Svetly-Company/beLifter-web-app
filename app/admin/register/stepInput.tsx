@@ -113,7 +113,7 @@ function DialogButton() {
                     <b>E-mail:</b> {previousData.email}<br />
                     <b>Endereço:</b> {previousData.location.street}, {previousData.location.streetNumber} - {previousData.location.district}, {previousData.location.city} - {cepMask(previousData.location.cep || "")}   
                 </span>
-                Caso todos os dados estejam corretos, aceite os termos e clique em "Criar conta".
+                Caso todos os dados estejam corretos, aceite os termos e clique em &quot;Criar conta&quot;.
             </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter className="flex flex-col sm:flex-col gap-4">
