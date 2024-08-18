@@ -1,5 +1,7 @@
 import axios from "axios";
 
+export const MONTH_ARRAY = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
+
 export const API_URL = process.env.NODE_ENV == "production" ? "https://belifter-server.onrender.com/" : "http://localhost:3333/";
 
 export class API {
