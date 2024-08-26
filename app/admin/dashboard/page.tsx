@@ -24,7 +24,7 @@ export default async function Page() {
                             <div className="bg-[#1976D2] flex justify-between p-4 rounded-3xl">
                                 <p className="font-bold text-xl">Matrículas</p>
                                 <select name="matriculas-month" id="matricula-month" className="bg-[#232324] px-2 py-1 rounded-lg">
-                                    {MONTH_ARRAY.map((m) => <option value={m.toLowerCase()}>{m}</option>)}
+                                    {MONTH_ARRAY.map((m, i) => <option key={i} value={m.toLowerCase()}>{m}</option>)}
                                 </select>
                             </div>
                             <div className="flex p-8 justify-between">
