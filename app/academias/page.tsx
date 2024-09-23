@@ -7,6 +7,7 @@ import GymExample from "@/assets/example-gym-bg.png";
 import { Footer } from "@/components/footer";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { API } from "@/utils/constants";
 
 interface IGymCard {
     name: string,
@@ -50,7 +51,7 @@ export default function Page() {
 
     async function getGyms(){
         try{
-            const values = await axios.get("https://belifter-server.onrender.com/gym")
+            const values = await API.get("gym")
             .then((res) => {
                 if(res.data.status){
                     throw new Error(String(res.data.message))
