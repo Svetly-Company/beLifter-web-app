@@ -1,19 +1,27 @@
+"use client";
+
 import { Header } from "@/components/header";
 import { ChevronRight } from "lucide-react";
-import Image from "next/image";
+import Image, { ImageProps } from "next/image";
 import GymExample from "@/assets/example-gym-bg.png";
 import { Footer } from "@/components/footer";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 interface IGymCard {
-    name: string;
-    address: string;
-    price: string;
+    name: string,
+    address: string,
+    price: string,
+    profilePicture: string;
 }
 
-function GymCard({ name, address, price } : IGymCard) {
+
+function GymCard({ name, address, price, profilePicture } : IGymCard) {
     return (
         <div className="flex flex-col w-64 mx-auto">
-            <Image src={GymExample} alt="Example" />
+            {
+                profilePicture ? <img src={profilePicture} alt="Example" className=" w-64 h-36 rounded-t-3xl object-cover"/> : <Image src={GymExample} alt="Example" />
+            }
             <div className="bg-[#232324] rounded-b-lg flex flex-col">
                 <h1 className="font-bold text-xl text-center pt-4">{name}</h1>
                 <p className="font-light text-xs text-center p-4">{address}</p>
@@ -27,7 +35,35 @@ function GymCard({ name, address, price } : IGymCard) {
     )
 }
 
+type GymProps = {
+    idGym:number,
+    name:string,
+    profilePicture: string
+}
 export default function Page() {
+
+    const [gyms, setGyms] = useState<Array<GymProps>>([])
+
+    useEffect(() =>{
+        getGyms()
+    }, [])
+
+    async function getGyms(){
+        try{
+            const values = await axios.get("https://belifter-server.onrender.com/gym")
+            .then((res) => {
+                if(res.data.status){
+                    throw new Error(String(res.data.message))
+                }
+                return res.data
+            }).catch((err) => { throw err})
+
+            setGyms(values)
+
+        }catch(err){
+            setGyms([])
+        }
+    }
     return (
         <section>
             <Header />
@@ -42,18 +78,11 @@ export default function Page() {
                     </div>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 md:gap-16 md:m-4 w-full justify-around items-center">
-                    <GymCard name="YellowFit" address="Rua Ribeirão do Santo, 288 - Vila Mariana, São Paulo" price="99,99" />
-                    <GymCard name="RedFit" address="Rua Mato do Grosso, 111 - Jardim São Paulo, São Paulo" price="139,99" />
-                    <GymCard name="DumbFit" address="Avenida Santo Ribeiro, 1322 - Pinheiros, São Paulo" price="69,99" />
-                    <GymCard name="YellowFit" address="Avenida Luiz Ricardo, 666 - Freguesia do Ó, São Paulo" price="89,90" />
-                    <GymCard name="YellowFit" address="Rua Ribeirão do Santo, 288 - Vila Mariana, São Paulo" price="99,99" />
-                    <GymCard name="YellowFit" address="Rua Ribeirão do Santo, 288 - Vila Mariana, São Paulo" price="99,99" />
-                    <GymCard name="YellowFit" address="Rua Ribeirão do Santo, 288 - Vila Mariana, São Paulo" price="99,99" />
-                    <GymCard name="YellowFit" address="Rua Ribeirão do Santo, 288 - Vila Mariana, São Paulo" price="99,99" />
-                    <GymCard name="YellowFit" address="Rua Ribeirão do Santo, 288 - Vila Mariana, São Paulo" price="99,99" />
-                    <GymCard name="YellowFit" address="Rua Ribeirão do Santo, 288 - Vila Mariana, São Paulo" price="99,99" />
-                    <GymCard name="YellowFit" address="Rua Ribeirão do Santo, 288 - Vila Mariana, São Paulo" price="99,99" />
-                    <GymCard name="YellowFit" address="Rua Ribeirão do Santo, 288 - Vila Mariana, São Paulo" price="99,99" />
+                    {
+                        gyms && gyms.map((x) => (
+                            <GymCard profilePicture={x.profilePicture} name={x.name} address={x.name} price="99,99" key={x.idGym} />
+                        ))
+                    }
                 </div>
             </section>
             <Footer />

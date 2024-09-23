@@ -15,8 +15,8 @@ export default function Home() {
                 <p className="text-base md:text-2xl mt-2 font-normal">Revolucionando a forma como você registra os seus treinos</p>
             </div>
             <div className="w-4/5 h-1/5 flex items-center justify-center gap-8 mt-8">
-                <button className=" bg-green-500 rounded-2xl px-4 py-2">Seja um parceiro</button>
-                <button className="rounded-2xl border-current border-2 px-4 py-2">Conheça nosso aplicativo</button>
+                <a href="/academia_parceiras" className=" bg-green-500 rounded-2xl px-4 py-2">Seja um parceiro</a>
+                <a href="/gestao" className="rounded-2xl border-current border-2 px-4 py-2">Conheça nosso aplicativo</a>
             </div>
           </div>
         </div>
