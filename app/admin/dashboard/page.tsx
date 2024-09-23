@@ -2,6 +2,9 @@ import { API, MONTH_ARRAY } from "@/utils/constants";
 import { cookies } from "next/headers"
 import { redirect } from "next/navigation";
 import { Navbar } from "../navbar";
+import { ArrowRight } from "lucide-react";
+import { ChartComponent } from "./chart";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export default async function Page() {
     const cookiesStore = cookies();
@@ -11,13 +14,18 @@ export default async function Page() {
     try{
         const user_req = await API.get("auth/profile", token.value);
         const user = user_req.data;
+        const data = [{name: 'Page A', uv: 400, pv: 2400, amt: 2400}];
+        console.log(user_req)
         return (
             <section className="h-screen flex p-8">
                 <Navbar selectedIndex={0} />
                 <div className="flex-[0.8]">
                     <div className="flex justify-around">
                         <h1 className="text-3xl font-semibold p-4 text-center">Seu Painel de controle está aqui, {user.name}.</h1>
-                        <div className="bg-white w-16 h-16 rounded-full"></div>
+                        <Avatar className="w-16 h-16">
+                            <AvatarImage src={user.profilePicture} />
+                            <AvatarFallback>CN</AvatarFallback>
+                        </Avatar>
                     </div>
                     <div className="p-4">
                         <div className="bg-[#161616] rounded-lg">
@@ -27,7 +35,7 @@ export default async function Page() {
                                     {MONTH_ARRAY.map((m, i) => <option key={i} value={m.toLowerCase()}>{m}</option>)}
                                 </select>
                             </div>
-                            <div className="flex p-8 justify-between">
+                            <div className="flex p-6 justify-between">
                                 <div className="border-r-2 border-[#3D383A] flex-1 text-center">
                                     <p>Ativas</p>
                                     <p className="text-2xl">0</p>
@@ -44,6 +52,18 @@ export default async function Page() {
                                     <p>Pendentes</p>
                                     <p className="text-2xl">0</p>
                                 </div>
+                            </div>
+                        </div>
+                        <div className="bg-[#161616] rounded-lg w-1/3 mt-4">
+                            <div className="bg-[#1976D2] flex justify-between p-4 rounded-3xl">
+                                <p className="font-bold text-xl">Financeiro</p>
+                                <a href="/admin/finances" className="flex gap-2">
+                                    <span>Ver Mais</span>
+                                    <ArrowRight />
+                                </a>
+                            </div>
+                            <div className="flex p-8 justify-between">
+                                <ChartComponent />
                             </div>
                         </div>
                     </div>

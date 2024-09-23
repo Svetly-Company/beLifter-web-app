@@ -14,6 +14,20 @@ export class API {
             return e;
         }
     }
+
+    static async upload(path : string, formData: FormData) {
+        try {
+            const result = await axios.post(API_URL+path, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            })
+            return { data: result.data, status: result.status };
+        }catch(e : any) {
+            return e;
+        }
+    }
+
      static async post(path : string, data : any, access_token?: string) {
         const header = access_token ? { headers: { Authorization: `Bearer ${access_token}` } } : {};
         try {

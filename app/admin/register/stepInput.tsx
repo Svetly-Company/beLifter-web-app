@@ -16,6 +16,8 @@ import {
 import { useRegistrationStore } from "./registerForm";
 import { useRouter } from "next/navigation";
 import { setCookie } from "cookies-next";
+import axios from "axios";
+import { API } from "@/utils/constants";
 
 /* INTERFACES */
 type IInput = { 
@@ -232,8 +234,20 @@ function StepFour({ next } : { next: () => void }) {
         setTimes({ ...times, [day]: { opening, closing }});
     }
 
+    async function sendMedia(e : React.ChangeEvent<HTMLInputElement>) {
+        const data = new FormData();
+        data.append("file", e.target.files![0]);
+        let url = await API.upload("upload/send", data)
+        updateData({ mediaUrl: url.data })
+    }
+
     return (
         <div>
+            <div className="my-2">
+                <h1 className="text-center text-lg font-bold">Imagem da Academia</h1>
+                <input type="file" id="picture" name="gympic"
+                onChange={sendMedia}/>
+            </div>
             <div className="my-2">
                 <h1 className="text-center text-lg font-bold">Horário de funcionamento</h1>
             </div>
