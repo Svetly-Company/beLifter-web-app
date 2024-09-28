@@ -3,13 +3,13 @@ import { cookies } from "next/headers"
 import { redirect } from "next/navigation";
 import { Navbar } from "../navbar";
 import { Search } from "lucide-react";
-import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 function Aluno({ user } : { user: any }) {
     return (
     <div className="bg-[#232324] m-2 px-8 py-2 flex rounded-2xl">
-        <Avatar className="w-16 h-16 rounded-full">
-            <AvatarImage className="w-16 h-16 rounded-full" src={user.mediaUrl} />
+        <Avatar className="w-16 h-16">
+            <AvatarImage src={user.mediaUrl} />
             <AvatarFallback>CN</AvatarFallback>
         </Avatar>
         <div className="flex flex-col justify-center m-2">
@@ -36,7 +36,10 @@ export default async function Page() {
                 <div className="flex-[0.8]">
                     <div className="flex justify-around">
                         <h1 className="text-3xl font-semibold p-4 text-center">Gerencie seus alunos aqui, {user.name}.</h1>
-                        <div className="bg-white w-16 h-16 rounded-full"></div>
+                        <Avatar className="w-16 h-16">
+                            <AvatarImage src={user.profilePicture} />
+                            <AvatarFallback>CN</AvatarFallback>
+                        </Avatar>
                     </div>
                     <div className="bg-[#151415] m-6 p-4">
                         <div className="flex flex-col">
