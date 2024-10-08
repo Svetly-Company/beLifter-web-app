@@ -53,7 +53,7 @@ export default async function Page() {
                                 </div>
                             </div>
                             <div className="flex flex-col">
-                                {lifters.map((l : any) => <Aluno user={l} />)}
+                                {lifters.map((l : any) => <Aluno user={l} key={1} />)}
                             </div>
                         </div>
                     </div>

@@ -10,6 +10,7 @@ import axios from "axios";
 import { API } from "@/utils/constants";
 
 interface IGymCard {
+    id: number,
     name: string,
     address: string,
     price: string,
@@ -17,7 +18,7 @@ interface IGymCard {
 }
 
 
-function GymCard({ name, address, price, profilePicture } : IGymCard) {
+function GymCard({ name, address, price, profilePicture, id } : IGymCard) {
     return (
         <div className="flex flex-col w-64 mx-auto">
             {
@@ -29,7 +30,7 @@ function GymCard({ name, address, price, profilePicture } : IGymCard) {
                 <p className="font-bold text-sm text-center">Plano básico</p>
                 <p className="font-semibold text-xl text-center"><span className="text-[#00BF63] mr-2">R$</span>{price}</p>
                 <div className="p-4 flex justify-center">
-                    <a className="text-center transition-colors bg-[#00BF63] hover:bg-[#3daa6b] px-8 py-2 rounded-full" href="#">Ver mais</a>
+                    <a className="text-center transition-colors bg-[#00BF63] hover:bg-[#3daa6b] px-8 py-2 rounded-full" href={"academias/" + id}>Ver mais</a>
                 </div>
             </div>
         </div>
@@ -37,7 +38,7 @@ function GymCard({ name, address, price, profilePicture } : IGymCard) {
 }
 
 type GymProps = {
-    idGym:number,
+    id:number,
     name:string,
     profilePicture: string
 }
@@ -81,7 +82,7 @@ export default function Page() {
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 md:gap-16 md:m-4 w-full justify-around items-center">
                     {
                         gyms && gyms.map((x) => (
-                            <GymCard profilePicture={x.profilePicture} name={x.name} address={x.name} price="99,99" key={x.idGym} />
+                            <GymCard profilePicture={x.profilePicture} name={x.name} address={x.name} price="99,99" id={x.id} key={x.id} />
                         ))
                     }
                 </div>
