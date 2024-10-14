@@ -2,6 +2,7 @@ import { API } from "@/utils/constants";
 import { cookies } from "next/headers"
 import { redirect } from "next/navigation";
 import { Navbar } from "../navbar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export default async function Page() {
     const cookiesStore = cookies();
@@ -17,7 +18,10 @@ export default async function Page() {
                 <div className="flex-[0.8]">
                     <div className="flex justify-around">
                         <h1 className="text-3xl font-semibold p-4 text-center">Controle suas finanças aqui, {user.name}.</h1>
-                        <div className="bg-white w-16 h-16 rounded-full"></div>
+                        <Avatar className="w-16 h-16">
+                            <AvatarImage src={user.profilePicture} />
+                            <AvatarFallback>CN</AvatarFallback>
+                        </Avatar>
                     </div>
                 </div>
             </section>

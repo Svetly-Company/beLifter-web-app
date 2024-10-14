@@ -38,19 +38,19 @@ export default async function Page() {
                             <div className="flex p-6 justify-between">
                                 <div className="border-r-2 border-[#3D383A] flex-1 text-center">
                                     <p>Ativas</p>
-                                    <p className="text-2xl">0</p>
+                                    <p className="text-2xl">7</p>
                                 </div>
                                 <div className="border-r-2 border-[#3D383A] flex-1 text-center">
                                     <p>Vencidas</p>
-                                    <p className="text-2xl">0</p>
+                                    <p className="text-2xl">1</p>
                                 </div>
                                 <div className="border-r-2 border-[#3D383A] flex-1 text-center">
                                     <p>Trancadas</p>
-                                    <p className="text-2xl">0</p>
+                                    <p className="text-2xl">2</p>
                                 </div>
                                 <div className="flex-1 text-center">
                                     <p>Pendentes</p>
-                                    <p className="text-2xl">0</p>
+                                    <p className="text-2xl">3</p>
                                 </div>
                             </div>
                         </div>

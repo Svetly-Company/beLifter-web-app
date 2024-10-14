@@ -2,6 +2,8 @@ import { API } from "@/utils/constants";
 import { cookies } from "next/headers"
 import { redirect } from "next/navigation";
 import { Navbar } from "../navbar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Trains } from "./Trains";
 
 export default async function Page() {
     const cookiesStore = cookies();
@@ -11,13 +13,21 @@ export default async function Page() {
     try{
         const user_req = await API.get("auth/profile", token.value);
         const user = user_req.data;
+        const trains_req = await API.get("workout", token.value);
+        const trains = trains_req.data;
         return (
             <section className="h-screen flex p-8">
                 <Navbar selectedIndex={3} />
                 <div className="flex-[0.8]">
                     <div className="flex justify-around">
-                        <h1 className="text-3xl font-semibold p-4 text-center">Controle os treinos pré-definidos aqui, {user.name}.</h1>
-                        <div className="bg-white w-16 h-16 rounded-full"></div>
+                        <h1 className="text-3xl font-semibold p-4 text-center">Gerencie os treinos aqui, {user.name}.</h1>
+                        <Avatar className="w-16 h-16">
+                            <AvatarImage src={user.profilePicture} />
+                            <AvatarFallback>CN</AvatarFallback>
+                        </Avatar>
+                    </div>
+                    <div className="bg-[#151415] m-6 p-4">
+                        <Trains trains={trains} />
                     </div>
                 </div>
             </section>

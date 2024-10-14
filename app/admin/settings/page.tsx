@@ -2,6 +2,8 @@ import { API } from "@/utils/constants";
 import { cookies } from "next/headers"
 import { redirect } from "next/navigation";
 import { Navbar } from "../navbar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Settings } from "./Settings";
 
 export default async function Page() {
     const cookiesStore = cookies();
@@ -17,7 +19,16 @@ export default async function Page() {
                 <div className="flex-[0.8]">
                     <div className="flex justify-around">
                         <h1 className="text-3xl font-semibold p-4 text-center">Veja suas configurações aqui, {user.name}.</h1>
-                        <div className="bg-white w-16 h-16 rounded-full"></div>
+                        <Avatar className="w-16 h-16">
+                            <AvatarImage src={user.profilePicture} />
+                            <AvatarFallback>CN</AvatarFallback>
+                        </Avatar>
+                    </div>
+                    <div className="p-4">
+                        <div className="bg-[#161616] rounded-lg p-8 flex flex-col gap-4">
+                            <h1 className="text-3xl font-semibold">Perfil da academia</h1>
+                            <Settings user={user} />
+                        </div>
                     </div>
                 </div>
             </section>
