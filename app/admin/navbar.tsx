@@ -29,7 +29,6 @@ export function Navbar({ selectedIndex } : { selectedIndex: number }) {
                 <NavbarItem selected={selectedIndex == 0} href="/admin/dashboard" name="Painel de Controle" icon={<LayoutDashboard size={24} />} />
                 <NavbarItem selected={selectedIndex == 1} href="/admin/lifters" name="Alunos" icon={<UserCircleIcon size={24} />} />
                 <NavbarItem selected={selectedIndex == 3} href="/admin/workouts" name="Treinos" icon={<Dumbbell size={24} />} />
-                <NavbarItem selected={selectedIndex == 4} href="/admin/reviews" name="Avaliações" icon={<BarChart2 size={24} />} />
                 <NavbarItem selected={selectedIndex == 5} href="/admin/settings" name="Configurações" icon={<Settings size={24} />} />
             </ul>
         </div>

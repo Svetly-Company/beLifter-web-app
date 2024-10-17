@@ -13,7 +13,7 @@ export default async function Page() {
     try{
         const user_req = await API.get("auth/profile", token.value);
         const user = user_req.data;
-        const lifters_req = await API.get("chat", token.value);
+        const lifters_req = await API.get("lifters", token.value);
         const lifters = lifters_req.data;
         return (
             <section className="h-screen flex p-8">

@@ -10,12 +10,12 @@ function Aluno({ user } : { user: any }) {
     return (
     <div className="bg-[#232324] m-2 px-8 py-2 flex rounded-2xl">
         <Avatar className="w-16 h-16">
-            <AvatarImage src={user.mediaUrl} />
+            <AvatarImage src={user.profilePicture} />
             <AvatarFallback>CN</AvatarFallback>
         </Avatar>
         <div className="flex flex-col justify-center m-2">
             <h1>{user.name}</h1>
-            <h2 className="text-[#979797]">isaque@gmail.com</h2>
+            <h2 className="text-[#979797]">{user.email}</h2>
         </div>
     </div>
     )
