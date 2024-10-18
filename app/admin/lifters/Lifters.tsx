@@ -6,9 +6,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useState } from "react";
 
 function Aluno({ user } : { user: any }) {
-    console.log(user);
     return (
-    <div className="bg-[#232324] m-2 px-8 py-2 flex rounded-2xl">
+    <a href={"/admin/lifter/"+user.id} className="bg-[#232324] m-2 px-8 py-2 flex rounded-2xl">
         <Avatar className="w-16 h-16">
             <AvatarImage src={user.profilePicture} />
             <AvatarFallback>CN</AvatarFallback>
@@ -17,7 +16,7 @@ function Aluno({ user } : { user: any }) {
             <h1>{user.name}</h1>
             <h2 className="text-[#979797]">{user.email}</h2>
         </div>
-    </div>
+    </a>
     )
 }
 
