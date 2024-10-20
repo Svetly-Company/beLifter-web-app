@@ -3,7 +3,7 @@ import { cookies } from "next/headers"
 import { redirect } from "next/navigation";
 import { Navbar } from "../../navbar";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Banknote, Cake, Calendar, CreditCard, Dumbbell, Mail, Phone, Repeat, StickyNote, User  } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
 export default async function Page({ params: { id } } : { params: { id: string } }) {
@@ -16,7 +16,6 @@ export default async function Page({ params: { id } } : { params: { id: string }
         const user = user_req.data;
         const lifters_req = await API.get("account/"+id, token.value);
         const aluno = lifters_req.data;
-        console.log(aluno);
         return (
             <section className="h-screen flex p-8">
                 <Navbar selectedIndex={1} />
@@ -33,7 +32,7 @@ export default async function Page({ params: { id } } : { params: { id: string }
                             <a href="/admin/lifters"><ArrowLeft /></a>
                             <h1 className="text-xl font-medium">Perfil do aluno</h1>
                         </div>
-                        <div className="p-8 flex gap-16">
+                        <div className="p-8 flex gap-16 border-b-2 border-[#1f1d1f]">
                             <Avatar className="w-32 h-32">
                                 <AvatarImage src={aluno.profilePicture} />
                                 <AvatarFallback>CN</AvatarFallback>
@@ -45,6 +44,62 @@ export default async function Page({ params: { id } } : { params: { id: string }
                                     <Badge className="bg-blue-500 hover:bg-blue-700">Aluno</Badge>
                                     <Badge className="bg-blue-500 hover:bg-blue-700">Ativo</Badge>
                                     <Badge className="bg-blue-500 hover:bg-blue-700">Plano anual</Badge>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="p-8 flex justify-between">
+                            <div className="flex flex-col gap-6">
+                                <h1 className="text-2xl font-semibold">Dados pessoais</h1>
+                                <div className="flex gap-2 text-[#cccccc]">
+                                    <User />
+                                    <span>Masculino</span>
+                                </div>
+                                <div className="flex gap-2 text-[#cccccc]">
+                                    <Cake />
+                                    <span>03/05/1998 - 26 anos</span>
+                                </div>
+                                <div className="flex gap-2 text-[#cccccc]">
+                                    <Phone />
+                                    <span>(11) 92334-9821</span>
+                                </div>
+                                <div className="flex gap-2 text-[#cccccc]">
+                                    <Mail />
+                                    <span>{aluno.email}</span>
+                                </div>
+                            </div>
+                            <div className="flex flex-col gap-6">
+                                <h1 className="text-2xl font-semibold">Dados do plano</h1>
+                                <div className="flex gap-2 text-[#cccccc]">
+                                    <StickyNote />
+                                    <span>Plano black</span>
+                                </div>
+                                <div className="flex gap-2 text-[#cccccc]">
+                                    <Dumbbell />
+                                    <span>Musculação</span>
+                                </div>
+                                <h1 className="text-2xl font-semibold">Dados do pagamento</h1>
+                                <div className="flex gap-2 text-[#cccccc]">
+                                    <CreditCard />
+                                    <span>Pagamento liberado</span>
+                                </div>
+                                <div className="flex gap-2 text-[#cccccc]">
+                                    <Banknote />
+                                    <span>Assinatura via PIX</span>
+                                </div>
+                            </div>
+                            <div className="flex flex-col gap-6">
+                                <h1 className="text-2xl font-semibold">Ficha de treino</h1>
+                                <div className="flex gap-2 text-[#cccccc]">
+                                    <Dumbbell />
+                                    <span>Hipertrofia</span>
+                                </div>
+                                <div className="flex gap-2 text-[#cccccc]">
+                                    <Calendar />
+                                    <span>Segunda, Quarta, Sexta</span>
+                                </div>
+                                <div className="flex gap-2 text-[#cccccc]">
+                                    <Repeat />
+                                    <span>Treino A, B, C</span>
                                 </div>
                             </div>
                         </div>
