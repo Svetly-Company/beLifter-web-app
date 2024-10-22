@@ -6,7 +6,6 @@ import Image, { ImageProps } from "next/image";
 import GymExample from "@/assets/example-gym-bg.png";
 import { Footer } from "@/components/footer";
 import { useEffect, useState } from "react";
-import axios from "axios";
 import { API } from "@/utils/constants";
 
 interface IGymCard {
@@ -48,7 +47,7 @@ export default function Page() {
 
     useEffect(() =>{
         getGyms()
-    }, [])
+    }, [gyms])
 
     async function getGyms(){
         try{
