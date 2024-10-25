@@ -2,7 +2,6 @@ import { API, MONTH_ARRAY } from "@/utils/constants";
 import { cookies } from "next/headers"
 import { redirect } from "next/navigation";
 import { Navbar } from "../navbar";
-import { ArrowRight } from "lucide-react";
 import { ChartComponent } from "./chart";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
@@ -14,8 +13,6 @@ export default async function Page() {
     try{
         const user_req = await API.get("auth/profile", token.value);
         const user = user_req.data;
-        const data = [{name: 'Page A', uv: 400, pv: 2400, amt: 2400}];
-        console.log(user_req)
         return (
             <section className="h-screen flex p-8">
                 <Navbar selectedIndex={0} />
@@ -54,13 +51,9 @@ export default async function Page() {
                                 </div>
                             </div>
                         </div>
-                        <div className="bg-[#161616] rounded-lg w-1/3 mt-4">
+                        <div className="bg-[#161616] rounded-lg w-full mt-4">
                             <div className="bg-[#1976D2] flex justify-between p-4 rounded-3xl">
                                 <p className="font-bold text-xl">Financeiro</p>
-                                <a href="/admin/finances" className="flex gap-2">
-                                    <span>Ver Mais</span>
-                                    <ArrowRight />
-                                </a>
                             </div>
                             <div className="flex p-8 justify-between">
                                 <ChartComponent />
