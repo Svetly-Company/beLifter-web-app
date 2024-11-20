@@ -6,7 +6,7 @@ import { useState } from "react"
 export function Settings({ user } : { user: any }) {
     const [name, setName] = useState(user.name as string);
     const [nameDisabled, setNameDisabled] = useState(true);
-    const [endereco, setEndereco] = useState("Avenida Valwemar");
+    const [endereco, setEndereco] = useState("Avenida Tiradentes");
     const [enderecoDisabled, setEnderecoDisabled] = useState(true);
 
     function changeName() {

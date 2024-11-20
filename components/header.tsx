@@ -25,8 +25,9 @@ export function Header({ absolute } : { absolute?: boolean }) {
           </a>
         </div>
         <div className="flex gap-8">
-          <HeaderLink text="Academias parceiras" href="academias" />
-          <HeaderLink text="Aplicativo Fitness" href="aplicativo" />
+          <HeaderLink text="Academias parceiras" href="/academias" />
+          <HeaderLink text="Aplicativo Fitness" href="/aplicativo" />
+          <HeaderLink text="Gestão de academia" href="/gestao" />
           <HeaderLink text="Entrar" href="/admin/login" />
         </div>
       </header>

@@ -2,7 +2,9 @@ import axios from "axios";
 
 export const MONTH_ARRAY = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
 
-export const API_URL = process.env.LOCAL_ENV == "localhost" ? "http://localhost:3333/" : "https://belifter-server.onrender.com/";
+const local = true;
+
+export const API_URL = local ? "http://localhost:3333/" : "https://belifter-server.onrender.com/";
 
 export class API {
      static async get(path : string, access_token?: string) {

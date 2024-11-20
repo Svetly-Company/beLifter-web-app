@@ -47,7 +47,7 @@ export default async function Page() {
                                 </div>
                                 <div className="flex-1 text-center">
                                     <p>Pendentes</p>
-                                    <p className="text-2xl">3</p>
+                                    <p className="text-2xl">1</p>
                                 </div>
                             </div>
                         </div>

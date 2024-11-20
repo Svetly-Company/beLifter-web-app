@@ -81,7 +81,7 @@ export default function Page() {
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 md:gap-16 md:m-4 w-full justify-around items-center">
                     {
                         gyms && gyms.map((x) => (
-                            <GymCard profilePicture={x.profilePicture} name={x.name} address={x.name} price="99,99" id={x.id} key={x.id} />
+                            <GymCard profilePicture={x.profilePicture} name={x.name} address={""} price="99,99" id={x.id} key={x.id} />
                         ))
                     }
                 </div>

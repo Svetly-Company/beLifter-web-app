@@ -34,10 +34,10 @@ export default function Page() {
                 </div>
             </section>
             <section className="bg-[#f0efef] min-h-screen flex flex-col md:flex-row items-center justify-center">
-                <div className="p-24">
-                    <Image src={PhoneShowcase} alt="Phone" />
+                <div className="p-4">
+                    <Image className="w-full" src={PhoneShowcase} alt="Phone" />
                 </div>
-                <div className="p-16">
+                <div className="p-8">
                         <h1 className="text-black font-bold text-2xl md:text-6xl">
                             <span className="text-[#00BF63]">Aluno?</span> Baixe agora o app
                         </h1>
@@ -73,33 +73,15 @@ export default function Page() {
                                 <div className="p-3">
                                     <Image src={IconBalan} alt=""/>
                                 </div>
-                                <h1 className="p-3">Avaliação fisica</h1>
-                                    <p className="align-items opacity-0 absolute invisible transition ease-in delay-150 duration-300 group-hover:visible group-hover:opacity-100 group-hover:static p-2">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatem saepe quaerat pariatur delectus commodi nostrum</p>
+                                <h1 className="p-3 font-semibold text-xl">Avaliação fisica</h1>
+                                    <p className="align-items text-justify transition ease-in delay-150 duration-300 visible opacity-100 static p-4">Nosso aplicativo é capaz de anotar tudo aquilo que você normalmente perderia tempo anotando durante seus treinos. Após isso, ainda proporcionamos dados sobre como treinar da melhor forma.</p>
                             </div>
-                            <div className="text-center justify-center flex flex-col  items-center min-h-36 min-w-60 max-w-60 rounded-lg bg-[#232324] hover:flex-1">
+                            <div className="text-center justify-center flex flex-col  items-center min-h-36 min-w-60 max-w-60 rounded-lg bg-[#232324] hover:flex-1 hover:bg-[#004422]">
                                 <div className="p-3">
                                     <Image src={IconSpeed} alt=""/>
                                 </div>
-                                <h1 className="p-3">Gestão de Trinos</h1>
-                            </div>
-                        </div>
-                        <div className="flex flex-row items-center gap-10 w-full justify-around">
-                            <div className="text-center justify-center flex flex-col items-center w-60 h-36 rounded-lg bg-[#232324]">
-                                <div className="p-3">
-                                    <Image src={IconSpeed} alt=""/>
-                                </div>
-                                 <h1 className="p-3">Gestor de Treinos</h1>
-                            </div>
-                            <div className="text-center justify-center flex flex-col items-center w-60 h-36 rounded-lg bg-[#232324]">
-                                <div className="p-3">
-                                    <Image src={IconBalan} alt=""/>
-                                </div>
-                                 <h1 className="p-3">Avaliação Fisíca</h1>
-                            </div>
-                        </div>
-                        <div className="flex flex-col items-center gap-14 w-full justify-around">
-                            <div className="text-center justify-center flex items-center w-full h-36 rounded-lg bg-[#232324]">
-                                <h1>Gestão de Treinos</h1>
+                                <h1 className="p-3 font-semibold text-xl">Gestão de Treinos</h1>
+                                <p className="align-items transition ease-in delay-150 duration-300 visible opacity-100 static text-justify p-4">Chega de complicações para organizar seus treinos. Com nossos treinos pré-definidos você só precisa se preocupar em realizar os exercícios e nada mais.</p>
                             </div>
                         </div>
                     </div>

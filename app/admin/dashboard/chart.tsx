@@ -94,7 +94,7 @@ export function ChartComponent() {
         <div className="flex w-full items-start gap-2 text-sm">
           <div className="grid gap-2">
             <div className="flex items-center gap-2 font-medium leading-none">
-              Aumento de 5.4% em Julho <TrendingUp className="h-4 w-4" />
+              Aumento de 5.4% em Junho <TrendingUp className="h-4 w-4" />
             </div>
           </div>
         </div>
