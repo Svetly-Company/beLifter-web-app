@@ -17,7 +17,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <main className="w-full bg-[#0F0F10] text-white min-h-screen">
+        <main className="w-full bg-[#0F0F10] text-white min-h-screen scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar-thumb-white scrollbar-track-transparent">
           {children}
         </main>
       </body>

@@ -8,7 +8,7 @@ export default function Page({ searchParams: { error } } : { searchParams: { err
     const cookiesStore = cookies();
     if(cookiesStore.get("access_token") && !error) return redirect("/admin/dashboard");
     return (
-        <section className="w-full h-full bg-[url('/admin-login-bg.jpg')] bg-no-repeat">
+        <section className="w-full h-full bg-[url('/admin-login-bg.jpg')] bg-no-repeat bg-cover">
             <div className="w-2/5 h-screen p-8">
                 <Image src={Logo} alt="BeLifter Blue logo" className="w-1/3" />
                 <LoginForm error={!!error} />

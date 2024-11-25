@@ -23,7 +23,7 @@ function GymCard({ name, address, price, profilePicture, id } : IGymCard) {
             {
                 profilePicture ? <img src={profilePicture} alt="Example" className=" w-64 h-36 rounded-t-3xl object-cover"/> : <Image src={GymExample} alt="Example" />
             }
-            <div className="bg-[#232324] rounded-b-lg flex flex-col">
+            <div className="bg-[#232324] rounded-lg flex flex-col">
                 <h1 className="font-bold text-xl text-center pt-4">{name}</h1>
                 <p className="font-light text-xs text-center p-4">{address}</p>
                 <p className="font-bold text-sm text-center">Plano básico</p>
@@ -73,7 +73,7 @@ export default function Page() {
                     <p className="text-2xl">Onde deseja treinar?</p>
                     <div className="flex">
                         <a href="#" className="bg-[#00BF63] py-2 px-4 rounded-full font-semibold flex gap-2">
-                            <label>Torne-se um parceiro</label>
+                            Torne-se um parceiro
                             <ChevronRight size={24} />
                         </a>
                     </div>

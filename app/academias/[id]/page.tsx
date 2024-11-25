@@ -13,7 +13,7 @@ export default function Academia({ params }: { params: { id: string } }) {
   
   const acadId = parseInt( strId )
 
-  const [gym, setGym] = useState<acadProps>({id: 0, name: "", cnpj: "", location: { idLocation: 0, CEP: "", street: "", district: "", city: ""}, profilePicutre: ""})
+  const [gym, setGym] = useState<acadProps>({id: 0, name: "", cnpj: "", location: { idLocation: 0, CEP: "", street: "", district: "", city: ""}, profilePicture: ""})
 
   type acadProps = {
     id: number
@@ -38,7 +38,7 @@ export default function Academia({ params }: { params: { id: string } }) {
       const obj = await API.get("gym")
       const val:acadProps[] = obj.data
       const acad = val.find((element: { id: number }) => element.id == acadId)
-      setGym(acad ?? {id: 0, name: "", cnpj: "", location: { idLocation: 0, CEP: "", street: "", district: "", city: ""}, profilePicutre: ""})
+      setGym(acad ?? {id: 0, name: "", cnpj: "", location: { idLocation: 0, CEP: "", street: "", district: "", city: ""}, profilePicture: ""})
     }catch(err){
       throw err;
     }
@@ -101,7 +101,7 @@ export default function Academia({ params }: { params: { id: string } }) {
             <h1 className="text-3xl font-bold">Planos</h1>
           </div>
           <div className="flex text-center justify-between">
-            <div className="border-[1px] text-xl border-white rounded-2xl">
+            <div className="border text-lg border-white rounded-full">
               <div className="p-4 text-2xl pt-12">
                 <p>R$599,99/ano</p>
               </div>
@@ -117,7 +117,7 @@ export default function Academia({ params }: { params: { id: string } }) {
                 <a href="#" className="bg-[#00BF63] p-4 rounded-2xl">Comprar agora</a>
               </div>
             </div>
-            <div className="border-[1px] text-xl border-white rounded-2xl">
+            <div className="border-[1px] text-xl border-white rounded-full">
               <div className="p-4 text-2xl pt-12">
                 <p>R$399,99/ano</p>
               </div>
@@ -133,7 +133,7 @@ export default function Academia({ params }: { params: { id: string } }) {
                 <a href="#" className="bg-[#00BF63] p-4 rounded-2xl">Comprar agora</a>
               </div>
             </div>
-            <div className="border-[1px] text-xl border-white rounded-2xl">
+            <div className="border-[1px] text-xl border-white rounded-fu">
               <div className="p-4 text-2xl pt-12">
                 <p>R$899,99/ano</p>
               </div>
