@@ -15,8 +15,8 @@ export default function Home() {
                 <p className="text-base md:text-xl mt-4 font-normal">Revolucionando a forma como você registra os seus treinos</p>
             </div>
             <div className="w-4/5 h-1/5 flex items-center justify-center gap-8 mt-8">
-                <a href="/academias" className=" bg-green-500 rounded-full w-80 text-center py-3">Seja um parceiro</a>
-                <a href="/gestao" className="rounded-full border-current border-2 w-80 text-center py-3">Conheça nosso aplicativo</a>
+                <a href="/academias" className=" bg-green-500 rounded-full w-80 text-center py-3 hover:bg-[#00592E] transition ease-in delay-100 duration-100">Seja um parceiro</a>
+                <a href="/gestao" className="rounded-full border-current border-2 w-80 text-center py-3 hover:bg-white hover:text-black transition ease-in delay-100 duration-100">Conheça nosso aplicativo</a>
             </div>
           </div>
         </div>

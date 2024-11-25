@@ -20,6 +20,7 @@ function HeaderLink({ href, text }: IHeaderLink) {
 export default function Home() {
   // Defina a variável 'absolute' como verdadeira ou falsa, dependendo da lógica desejada
   const absolute = false; // Mude para true se você quiser adicionar a classe "absolute"
+ 
 
   return (
     <section className="bg-black">
@@ -56,8 +57,10 @@ export default function Home() {
         <div className="p-4">
           <button className="w-48 h-11 bg-black hover:bg-[#0077B6] rounded-full"><a className="" href="#Recursos">Saiba Mais</a></button>
         </div>
-        <div className="w-4/6 flex flex-col justify-end">
-          <Image className="rounded-t-3xl"
+        <div className="w-4/6 flex flex-col justify-end shadow-black shadow-2xl
+
+">
+          <Image className="rounded-t-3xl "
             src={ImgGets} alt="Image da gestão parte admin"
           />
         </div>

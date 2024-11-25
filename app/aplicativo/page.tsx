@@ -17,26 +17,6 @@ export default function Page() {
     return (
         <section>
             <Header absolute />
-            <section className="flex flex-col md:flex-row py-16 md:py-0 md:min-h-screen  bg-no-repeat bg-cover">
-                <div className="flex-[0.6] bg-[url('/assets/BackgroundAPP.jpg')]">
-                    <div className="flex flex-col w-full h-full justify-center items-center">
-                        <div className="flex flex-col mt-4">
-                            <h1 className="font-bold text-6xl text-center md:text-[8rem]"><span className="text-[#00BF63]">Be</span>Lifter</h1>
-                            <div className="flex flex-col justify-center p-1">
-                                <div className="p-6">
-                                    <h2 className="font-semibold text-center text-base md:text-3xl">O app fitness indicado para você!</h2> 
-                                </div>
-                                <div className="flex justify-center">
-                                    <a className="bg-[#00BF63] rounded-full px-20 py-4 hover:bg-[#004422] transition ease-in delay-150 duration-300  " href="#">Baixar agora</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-
-
             <section className="flex flex-col md:flex-row py-16 md:py-0 md:min-h-screen bg-gradient-to-b from-[#004422] to-[#017434]">
                 <div className="flex-[0.6]">
                     <div className="flex flex-col w-full h-full justify-center items-center">
@@ -47,7 +27,7 @@ export default function Page() {
                                     <h2 className="font-semibold text-center text-base md:text-3xl">O app fitness indicado para você!</h2> 
                                 </div>
                                 <div className="flex justify-center">
-                                    <a className="bg-[#00BF63] rounded-full px-20 py-4 hover:bg-[#004422] transition ease-in delay-150 duration-300  " href="#">Baixar agora</a>
+                                    <a className="bg-[#00BF63] rounded-full px-20 py-4 hover:bg-[#004422] transition ease-in delay-100 duration-300  " href="#">Baixar agora</a>
                                 </div>
                             </div>
                         </div>
@@ -109,13 +89,13 @@ export default function Page() {
                     <h1 className="text-black font-bold text-3xl md:text-6xl">para gerenciar seus</h1>
                     <h1 className="text-black font-bold text-3xl md:text-6xl">treinos e dietas:</h1>
                     <div className="flex items-center gap-6 w-full justify-around p-28">
-                            <a className="bg-[#00BF63] text-center justify-center flex flex-row items-center w-80 h-12 rounded-full" href="#">
+                            <a className="bg-[#00BF63] text-center justify-center flex flex-row items-center w-80 h-12 rounded-full hover:bg-[#004422] transition ease-in delay-100 duration-300" href="#">
                                 <div className="p-2">
                                     <Image src={IconAndroid} alt=""/>
                                 </div>
                                 Baixar para Android
                             </a>
-                            <a className="bg-[#00BF63] text-center justify-center flex flex-row items-center w-80 h-12 rounded-full" href="#">
+                            <a className="bg-[#00BF63] text-center justify-center flex flex-row items-center w-80 h-12 rounded-full hover:bg-[#004422] transition ease-in delay-100 duration-300" href="#">
                                 <div className="p-2">
                                     <Image src={IconIphone} alt=""/>
                                 </div>
